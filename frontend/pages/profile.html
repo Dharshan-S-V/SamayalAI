@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Profile – SamayalAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F5F2EC;-webkit-font-smoothing:antialiased}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:62px;background:rgba(253,246,236,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;padding:0 1.5rem;gap:1rem}
+.logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:#B5490A;text-decoration:none}.logo b{color:#E8610A}
+.nav-r{margin-left:auto;display:flex;gap:10px}
+.nbtn{padding:6px 14px;border:1.5px solid rgba(0,0,0,.12);border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;background:transparent;color:#5A5856;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center}
+.nbtn:hover{border-color:#E8610A;color:#E8610A}
+.nbtn.danger{color:#DC2626;border-color:#FECACA}.nbtn.danger:hover{background:#DC2626;color:#fff;border-color:#DC2626}
+.page{max-width:860px;margin:0 auto;padding:calc(62px + 2rem) 1.5rem 3rem}
+.hero{background:linear-gradient(135deg,#B5490A,#E8610A);border-radius:16px;padding:2rem;color:#fff;display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem}
+.hero-av{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;flex-shrink:0;border:3px solid rgba(255,255,255,.4)}
+.hero-info h1{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;margin-bottom:3px}
+.hero-info p{color:rgba(255,255,255,.75);font-size:.875rem;margin-bottom:1rem}
+.hero-stats{display:flex;gap:1.5rem}
+.hs{text-align:center}.hs .v{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;color:#F5C842}.hs .l{font-size:.7rem;color:rgba(255,255,255,.6)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;overflow:hidden}
+.card-head{padding:1rem 1.25rem;border-bottom:1px solid rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center;background:#FDF6EC}
+.card-head h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:800}
+.edit-btn{padding:5px 12px;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;background:transparent;border:1.5px solid rgba(0,0,0,.12);color:#5A5856;transition:all .18s}
+.edit-btn:hover{border-color:#E8610A;color:#E8610A}
+.card-body{padding:1.1rem}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed rgba(0,0,0,.07);font-size:.875rem}
+.ir:last-child{border-bottom:none}
+.ir-l{color:#9A9490;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.ir-v{font-weight:600;color:#1A1A1C;text-align:right;max-width:60%}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.chip{padding:3px 9px;border-radius:99px;font-size:.72rem;font-weight:600}
+.chip-o{background:#FFF3E8;color:#B5490A;border:1px solid rgba(232,97,10,.2)}
+.chip-g{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0}
+.chip-gray{background:#F5F2EC;color:#5A5856;border:1px solid rgba(0,0,0,.1)}
+/* Edit form */
+.edit-form{display:none;padding:1.1rem;border-top:1px solid rgba(0,0,0,.06)}
+.edit-form.open{display:block}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.75rem;font-weight:600;color:#5A5856;margin-bottom:4px}
+.fi{width:100%;padding:.7rem .9rem;border:1.5px solid rgba(0,0,0,.12);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:#F5F2EC;color:#1A1A1C;outline:none;transition:border-color .18s;-webkit-appearance:none}
+.fi:focus{border-color:#E8610A;background:#fff}
+select.fi{cursor:pointer}
+.ec{display:flex;flex-wrap:wrap;gap:7px}
+.ec .ch{padding:6px 12px;border:1.5px solid rgba(0,0,0,.1);border-radius:99px;font-size:.8rem;font-weight:500;cursor:pointer;background:#fff;color:#5A5856;transition:all .18s}
+.ec .ch:hover{border-color:#E8610A;color:#E8610A}
+.ec .ch.on{background:#E8610A;color:#fff;border-color:#E8610A}
+.save-row{display:flex;gap:8px;margin-top:1rem}
+.btn-save{padding:.65rem 1.4rem;background:#E8610A;color:#fff;border:none;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .18s}
+.btn-save:hover{background:#B5490A}
+.btn-cancel{padding:.65rem 1.2rem;background:transparent;border:1.5px solid rgba(0,0,0,.12);border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;color:#5A5856;transition:all .18s}
+.btn-cancel:hover{border-color:#E8610A;color:#E8610A}
+#sb{padding:.75rem 1rem;border-radius:10px;font-size:.85rem;font-weight:500;margin-bottom:1rem;border:1px solid transparent;display:none;align-items:center;gap:8px}
+#sb.s{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
+#sb.e{background:#FEF2F2;border-color:#FECACA;color:#B91C1C}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.hero{flex-direction:column;text-align:center}.hero-stats{justify-content:center}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/dashboard" class="logo">Samayal<b>.AI</b></a>
+  <span style="color:#9A9490;font-size:.85rem">/ My Profile</span>
+  <div class="nav-r">
+    <a href="/dashboard" class="nbtn">← Dashboard</a>
+    <button class="nbtn danger" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+<div class="page">
+  <div id="sb" role="alert"></div>
+  <div class="hero">
+    <div class="hero-av" id="hAv">U</div>
+    <div class="hero-info">
+      <h1 id="hName">Loading…</h1>
+      <p id="hEmail">—</p>
+      <div class="hero-stats">
+        <div class="hs"><div class="v" id="hState">—</div><div class="l">Region</div></div>
+        <div class="hs"><div class="v" id="hDiet">—</div><div class="l">Diet</div></div>
+        <div class="hs"><div class="v" id="hSpice">—</div><div class="l">Spice</div></div>
+        <div class="hs"><div class="v" id="hSkill">—</div><div class="l">Skill</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid">
+    <!-- Personal Info -->
+    <div class="card">
+      <div class="card-head"><h3>👤 Personal Info</h3><button class="edit-btn" onclick="toggleEdit('pi')">✏️ Edit</button></div>
+      <div class="card-body" id="pi-view">
+        <div class="ir"><span class="ir-l">Name</span><span class="ir-v" id="v-name">—</span></div>
+        <div class="ir"><span class="ir-l">Email</span><span class="ir-v" id="v-email">—</span></div>
+        <div class="ir"><span class="ir-l">City</span><span class="ir-v" id="v-city">—</span></div>
+        <div class="ir"><span class="ir-l">State</span><span class="ir-v" id="v-state">—</span></div>
+        <div class="ir"><span class="ir-l">Joined</span><span class="ir-v" id="v-joined">—</span></div>
+      </div>
+      <div class="edit-form" id="pi-edit">
+        <div class="fg"><label>City</label><input class="fi" id="e-city" placeholder="e.g. Chennai"/></div>
+        <div class="fg"><label>State</label>
+          <select class="fi" id="e-state">
+            <option value="Tamil Nadu">Tamil Nadu</option><option value="Kerala">Kerala</option>
+            <option value="Karnataka">Karnataka</option><option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Telangana">Telangana</option><option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="save-row">
+          <button class="btn-save" onclick="save('pi')">💾 Save</button>
+          <button class="btn-cancel" onclick="toggleEdit('pi')">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Food Prefs -->
+    <div class="card">
+      <div class="card-head"><h3>🌶️ Food Preferences</h3><button class="edit-btn" onclick="toggleEdit('fp')">✏️ Edit</button></div>
+      <div class="card-body" id="fp-view">
+        <div class="ir"><span class="ir-l">Diet</span><span class="ir-v" id="v-diet">—</span></div>
+        <div class="ir"><span class="ir-l">Spice</span><span class="ir-v" id="v-spice">—</span></div>
+        <div class="ir"><span class="ir-l">Skill</span><span class="ir-v" id="v-skill">—</span></div>
+        <div class="ir" style="flex-direction:column;align-items:flex-start;gap:6px">
+          <span class="ir-l">Cuisines</span><div class="chips" id="v-regions"></div>
+        </div>
+      </div>
+      <div class="edit-form" id="fp-edit">
+        <div class="fg"><label>Diet Type</label>
+          <select class="fi" id="e-diet">
+            <option value="both">Everything</option><option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option><option value="non-vegetarian">Non-Vegetarian</option>
+            <option value="eggetarian">Eggetarian</option>
+          </select>
+        </div>
+        <div class="fg"><label>Spice Level</label>
+          <select class="fi" id="e-spice">
+            <option value="mild">😌 Mild</option><option value="medium">😊 Medium</option>
+            <option value="spicy">😤 Spicy</option><option value="very-spicy">🔥 Very Hot</option>
+            <option value="chettinad">💀 Chettinad</option>
+          </select>
+        </div>
+        <div class="fg"><label>Skill Level</label>
+          <select class="fi" id="e-skill">
+            <option value="beginner">🌱 Beginner</option>
+            <option value="intermediate">🍳 Intermediate</option>
+            <option value="advanced">👨‍🍳 Advanced</option>
+          </select>
+        </div>
+        <div class="save-row">
+          <button class="btn-save" onclick="save('fp')">💾 Save</button>
+          <button class="btn-cancel" onclick="toggleEdit('fp')">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Health Goals -->
+    <div class="card">
+      <div class="card-head"><h3>🎯 Health Goals</h3><button class="edit-btn" onclick="toggleEdit('hg')">✏️ Edit</button></div>
+      <div class="card-body" id="hg-view">
+        <div class="chips" id="v-health" style="margin-top:4px"></div>
+      </div>
+      <div class="edit-form" id="hg-edit">
+        <div class="ec" id="e-health">
+          <div class="ch" data-v="weight-loss">⚖️ Weight Loss</div>
+          <div class="ch" data-v="high-protein">💪 High Protein</div>
+          <div class="ch" data-v="diabetic-friendly">🩺 Diabetic Friendly</div>
+          <div class="ch" data-v="heart-healthy">❤️ Heart Healthy</div>
+          <div class="ch" data-v="gym-diet">🏋️ Gym Diet</div>
+          <div class="ch" data-v="kids-nutrition">👶 Kids</div>
+          <div class="ch" data-v="balanced">🎯 Balanced</div>
+        </div>
+        <div class="save-row">
+          <button class="btn-save" onclick="save('hg')">💾 Save</button>
+          <button class="btn-cancel" onclick="toggleEdit('hg')">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Favourite Dishes -->
+    <div class="card">
+      <div class="card-head"><h3>❤️ Favourite Dishes</h3><button class="edit-btn" onclick="toggleEdit('fd')">✏️ Edit</button></div>
+      <div class="card-body" id="fd-view">
+        <div class="chips" id="v-favs" style="margin-top:4px"></div>
+      </div>
+      <div class="edit-form" id="fd-edit">
+        <div class="ec" id="e-favs">
+          <div class="ch" data-v="Idli">🫓 Idli</div><div class="ch" data-v="Dosa">🥞 Dosa</div>
+          <div class="ch" data-v="Sambar">🍲 Sambar</div><div class="ch" data-v="Pulikolambu">🫙 Pulikolambu</div>
+          <div class="ch" data-v="Rasam">🍵 Rasam</div><div class="ch" data-v="Biryani">🍛 Biryani</div>
+          <div class="ch" data-v="Chettinad Chicken">🍗 Chettinad</div><div class="ch" data-v="Fish Curry">🐟 Fish Curry</div>
+          <div class="ch" data-v="Avial">🥗 Avial</div><div class="ch" data-v="Upma">🫕 Upma</div>
+          <div class="ch" data-v="Payasam">🍮 Payasam</div><div class="ch" data-v="Egg Curry">🥚 Egg Curry</div>
+        </div>
+        <div class="save-row">
+          <button class="btn-save" onclick="save('fd')">💾 Save</button>
+          <button class="btn-cancel" onclick="toggleEdit('fd')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+if (!localStorage.getItem('samayal_token')) window.location.href = '/login';
+var prof = {};
+
+async function loadProfile() {
+  try {
+    var res  = await fetch('/api/auth/me',{headers:{Authorization:'Bearer '+localStorage.getItem('samayal_token')}});
+    var data = await res.json();
+    if (!data.success) return;
+    var d = data.user; prof = d;
+    document.getElementById('hAv').textContent   = d.avatar_initials||d.name?.[0]||'U';
+    document.getElementById('hName').textContent  = d.name||'—';
+    document.getElementById('hEmail').textContent = d.email||'—';
+    document.getElementById('hState').textContent = d.state||'—';
+    document.getElementById('hDiet').textContent  = d.dietary_preference||'—';
+    document.getElementById('hSpice').textContent = d.spice_level||'—';
+    document.getElementById('hSkill').textContent = d.cooking_skill||'—';
+    document.getElementById('v-name').textContent  = d.name||'—';
+    document.getElementById('v-email').textContent = d.email||'—';
+    document.getElementById('v-city').textContent  = d.city||'—';
+    document.getElementById('v-state').textContent = d.state||'—';
+    document.getElementById('v-joined').textContent= d.created_at?new Date(d.created_at).toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}):'—';
+    document.getElementById('v-diet').textContent  = d.dietary_preference||'—';
+    document.getElementById('v-spice').textContent = d.spice_level||'—';
+    document.getElementById('v-skill').textContent = d.cooking_skill||'—';
+    var regions=d.preferred_regions||[];
+    document.getElementById('v-regions').innerHTML = regions.length?regions.map(function(r){return '<span class="chip chip-o">'+r+'</span>';}).join(''):'<span style="color:#9A9490;font-size:.82rem">Not set</span>';
+    var health=d.health_goals||[];
+    document.getElementById('v-health').innerHTML = health.length?health.map(function(g){return '<span class="chip chip-g">'+g+'</span>';}).join(''):'<span style="color:#9A9490;font-size:.82rem">Not set</span>';
+    var favs=d.favorite_dishes||[];
+    document.getElementById('v-favs').innerHTML = favs.length?favs.map(function(f){return '<span class="chip chip-o">'+f+'</span>';}).join(''):'<span style="color:#9A9490;font-size:.82rem">Not set</span>';
+    document.getElementById('e-city').value  = d.city||'';
+    document.getElementById('e-state').value = d.state||'Tamil Nadu';
+    document.getElementById('e-diet').value  = d.dietary_preference||'both';
+    document.getElementById('e-spice').value = d.spice_level||'medium';
+    document.getElementById('e-skill').value = d.cooking_skill||'beginner';
+    setChips('e-health', health);
+    setChips('e-favs',   favs);
+  } catch(e) { console.error(e); }
+}
+
+function setChips(id, vals) {
+  document.querySelectorAll('#'+id+' .ch').forEach(function(c){
+    c.classList.toggle('on', vals.includes(c.dataset.v));
+  });
+}
+function getChips(id) {
+  return Array.from(document.querySelectorAll('#'+id+' .ch.on')).map(function(c){return c.dataset.v;});
+}
+
+document.querySelectorAll('.ch').forEach(function(c){
+  c.addEventListener('click', function(){c.classList.toggle('on');});
+});
+
+function toggleEdit(section) {
+  var ef = document.getElementById(section+'-edit');
+  ef.classList.toggle('open');
+}
+
+function showSB(type, msg) {
+  var el=document.getElementById('sb');
+  el.className=type; el.style.display='flex';
+  el.innerHTML='<span>'+(type==='s'?'✅':'❌')+'</span><span>'+msg+'</span>';
+  setTimeout(function(){el.style.display='none';},3500);
+}
+
+async function save(section) {
+  var payload = Object.assign({}, prof);
+  if (section==='pi') {
+    payload.city  = document.getElementById('e-city').value;
+    payload.state = document.getElementById('e-state').value;
+  } else if (section==='fp') {
+    payload.dietary_preference = document.getElementById('e-diet').value;
+    payload.spice_level        = document.getElementById('e-spice').value;
+    payload.cooking_skill      = document.getElementById('e-skill').value;
+  } else if (section==='hg') {
+    payload.health_goals = getChips('e-health');
+  } else if (section==='fd') {
+    payload.favorite_dishes = getChips('e-favs');
+  }
+  try {
+    var res  = await fetch('/api/auth/onboarding',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.getItem('samayal_token')},body:JSON.stringify(payload)});
+    var data = await res.json();
+    if (data.success) { showSB('s','Profile updated! ✅'); toggleEdit(section); loadProfile(); }
+    else showSB('e', data.error||'Failed to save.');
+  } catch(e) { showSB('e','Cannot reach server.'); }
+}
+
+function logout() {
+  fetch('/api/auth/logout',{method:'POST',headers:{Authorization:'Bearer '+localStorage.getItem('samayal_token')}}).catch(()=>{});
+  localStorage.clear(); window.location.href='/login';
+}
+
+loadProfile();
+</script>
+</body>
+</html>

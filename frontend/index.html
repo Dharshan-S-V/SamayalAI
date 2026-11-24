@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SamayalAI – உங்கள் AI சமையல் நண்பன்</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#FDF6EC;-webkit-font-smoothing:antialiased}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;background:rgba(253,246,236,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;padding:0 2rem;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:#B5490A;text-decoration:none}.logo b{color:#E8610A}
+.nav-acts{display:flex;gap:10px;align-items:center}
+a.nbtn{padding:7px 16px;border:1.5px solid rgba(0,0,0,.12);border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;color:#5A5856;transition:all .18s}
+a.nbtn:hover{border-color:#E8610A;color:#E8610A}
+a.nbtn.p{background:#E8610A;color:#fff;border-color:#E8610A}
+a.nbtn.p:hover{background:#B5490A}
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding:calc(64px + 3rem) 4rem 3rem;max-width:1200px;margin:0 auto;gap:4rem}
+.hero-l{flex:1}
+.badge{display:inline-flex;align-items:center;gap:7px;background:#FFF5CC;color:#7A6000;padding:5px 14px;border-radius:99px;font-size:.78rem;font-weight:700;margin-bottom:1.25rem;border:1px solid rgba(245,200,66,.4)}
+.hero-l h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:900;line-height:1.1;color:#1A1A1C;margin-bottom:.75rem}
+.hero-l h1 em{font-style:italic;color:#E8610A}
+.ta{font-family:'Noto Sans Tamil',sans-serif;font-size:1.2rem;color:#2D6A4F;font-weight:600;margin-bottom:1.1rem}
+.hero-l p{font-size:1rem;color:#5A5856;line-height:1.75;margin-bottom:2.25rem;max-width:460px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hbtn{padding:.875rem 2rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer}
+.hbtn.p{background:#E8610A;color:#fff}.hbtn.p:hover{background:#B5490A;transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,97,10,.3)}
+.hbtn.s{background:#fff;color:#1A1A1C;border:1.5px solid rgba(0,0,0,.14)}.hbtn.s:hover{border-color:#E8610A;color:#E8610A;transform:translateY(-2px)}
+/* Hero card */
+.hero-r{flex:1;display:flex;justify-content:center;align-items:center;position:relative}
+.hcard{background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.14);padding:1.75rem;width:340px;animation:fl 5s ease-in-out infinite;border:1px solid rgba(0,0,0,.06)}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hcard-img{height:180px;border-radius:14px;background:linear-gradient(135deg,#FF8C38,#E8610A,#B5490A);display:flex;align-items:center;justify-content:center;font-size:5.5rem;margin-bottom:1.25rem;position:relative}
+.hcard-img::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.18),transparent 60%);border-radius:14px}
+.hcard h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;margin-bottom:3px}
+.hcard .meta{font-size:.75rem;color:#9A9490;margin-bottom:1rem}
+.ing-row{display:flex;align-items:baseline;gap:7px;padding:5px 0;border-bottom:1px dashed rgba(0,0,0,.07);font-size:.8rem}
+.ing-row:last-child{border-bottom:none}
+.ing-en{font-weight:600;color:#1A1A1C}
+.ing-sep{color:#E8610A;font-weight:800}
+.ing-ta{font-family:'Noto Sans Tamil',sans-serif;color:#5A5856}
+.ing-qty{margin-left:auto;font-weight:700;color:#E8610A;background:#FFF3E8;padding:2px 7px;border-radius:99px;white-space:nowrap;font-size:.72rem}
+.fb{position:absolute;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:9px 13px;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid rgba(0,0,0,.06)}
+.fb.tl{top:10%;left:-8%;animation:fl 5s ease-in-out .5s infinite}
+.fb.br{bottom:10%;right:-6%;animation:fl 5s ease-in-out 1.2s infinite}
+/* Stats */
+.stats{background:#E8610A;padding:3.5rem 2rem}
+.stats-in{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
+.sv{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;color:#fff;line-height:1}
+.sl{font-size:.85rem;color:rgba(255,255,255,.8);margin-top:5px;font-weight:500}
+/* Features */
+.section{padding:5.5rem 2rem;max-width:1200px;margin:0 auto}
+.sh{text-align:center;margin-bottom:3rem}
+.sh .lbl{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E8610A;margin-bottom:.5rem}
+.sh h2{font-family:'Playfair Display',serif;font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:900;color:#1A1A1C;margin-bottom:.5rem}
+.sh p{color:#5A5856;max-width:500px;margin:0 auto}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.fc{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:1.75rem;transition:all .2s;position:relative;overflow:hidden}
+.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#E8610A;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.fc:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.fc:hover::before{transform:scaleX(1)}
+.fc-i{font-size:2.25rem;margin-bottom:.875rem}
+.fc h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;margin-bottom:.4rem}
+.fc p{font-size:.875rem;color:#5A5856;line-height:1.7}
+/* CTA */
+.cta{background:linear-gradient(135deg,#1A0A04,#6B2D0F);padding:5.5rem 2rem;text-align:center;color:#fff}
+.cta h2{font-family:'Playfair Display',serif;font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:900;margin-bottom:.75rem}
+.cta h2 em{font-style:italic;color:#F5C842}
+.cta p{color:rgba(255,255,255,.7);max-width:480px;margin:0 auto 2.25rem;line-height:1.7}
+.cta .ta{color:#FF8C38;margin-bottom:.75rem;display:block}
+/* Footer */
+footer{background:#1A1A1C;color:#fff;padding:3rem 2rem 2rem}
+.fi{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem}
+.fl{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:.5rem}.fl b{color:#E8610A}
+.fd{font-size:.85rem;color:rgba(255,255,255,.5);line-height:1.7;max-width:260px;margin-bottom:1rem}
+.fc-col h4{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.5);margin-bottom:.875rem}
+.fc-col ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.fc-col a{text-decoration:none;font-size:.85rem;color:rgba(255,255,255,.5);transition:color .18s}
+.fc-col a:hover{color:#FF8C38}
+.fb2{border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem;display:flex;justify-content:space-between;font-size:.78rem;color:rgba(255,255,255,.3);flex-wrap:wrap;gap:.5rem}
+@media(max-width:900px){.hero{flex-direction:column;padding:calc(64px + 2rem) 2rem 2rem;text-align:center}.hero-r{display:none}.hero-btns{justify-content:center}.feat-grid{grid-template-columns:1fr 1fr}.stats-in{grid-template-columns:repeat(2,1fr)}.fi{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.feat-grid{grid-template-columns:1fr}.fi{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="logo">Samayal<b>.AI</b></a>
+  <div class="nav-acts">
+    <a href="/login" class="nbtn">Sign In</a>
+    <a href="/register" class="nbtn p">Get Started →</a>
+  </div>
+</nav>
+
+<div style="background:#FDF6EC">
+<div class="hero">
+  <div class="hero-l">
+    <div class="badge">🌟 Powered by Groq AI · South Indian Specialist</div>
+    <h1>Cook Like a <em>Tamil Ammamma</em><br>with AI</h1>
+    <div class="ta">உங்கள் AI சமையல் நண்பன்</div>
+    <p>From Chettinad's fiery curries to Kerala's coconut stews — get authentic recipes with bilingual Tamil + English ingredients, nutrition tracking, and a 7-day personalized meal plan.</p>
+    <div class="hero-btns">
+      <a href="/register" class="hbtn p">🍲 Start Cooking Free →</a>
+      <a href="/login" class="hbtn s">Sign In</a>
+    </div>
+  </div>
+  <div class="hero-r">
+    <div class="fb tl">🥗 Health Score: 9.2/10</div>
+    <div class="hcard">
+      <div class="hcard-img">🫙</div>
+      <h3>Pulikolambu</h3>
+      <div class="meta">⏱ 45 min · 🔥 Medium · 👥 4 servings · 180 kcal</div>
+      <div class="ing-row"><span class="ing-en">Tamarind</span><span class="ing-sep">/</span><span class="ing-ta">புளி</span><span class="ing-qty">1 lemon-size</span></div>
+      <div class="ing-row"><span class="ing-en">Sesame Oil</span><span class="ing-sep">/</span><span class="ing-ta">நல்லெண்ணெய்</span><span class="ing-qty">2 tbsp</span></div>
+      <div class="ing-row"><span class="ing-en">Mustard Seeds</span><span class="ing-sep">/</span><span class="ing-ta">கடுகு</span><span class="ing-qty">1 tsp</span></div>
+      <div class="ing-row"><span class="ing-en">Curry Leaves</span><span class="ing-sep">/</span><span class="ing-ta">கறிவேப்பிலை</span><span class="ing-qty">1 sprig</span></div>
+    </div>
+    <div class="fb br">📺 Tamil YouTube Links</div>
+  </div>
+</div>
+</div>
+
+<div class="stats">
+  <div class="stats-in">
+    <div><div class="sv">500+</div><div class="sl">Authentic Recipes</div></div>
+    <div><div class="sv">7</div><div class="sl">South Indian States</div></div>
+    <div><div class="sv">100%</div><div class="sl">Bilingual Ingredients</div></div>
+    <div><div class="sv">AI</div><div class="sl">Groq-Powered</div></div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="sh">
+    <div class="lbl">Everything You Need</div>
+    <h2>Your Complete AI Culinary Ecosystem</h2>
+    <p>More than a recipe app — SamayalAI is your personal chef, nutritionist, and Tamil cooking guru.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="fc"><div class="fc-i">🤖</div><h3>Groq AI Chef</h3><p>Ask anything in Tamil or English. Get chef-level recipes with exact measurements and step-by-step guidance.</p></div>
+    <div class="fc"><div class="fc-i">🌐</div><h3>Bilingual Ingredients</h3><p>Every ingredient in English AND Tamil: <em>Toor Dal 1 cup / துவரம் பருப்பு 1 கப்</em> — cook with your family.</p></div>
+    <div class="fc"><div class="fc-i">🗓️</div><h3>7-Day Meal Planner</h3><p>Breakfast · Morning Snack · Lunch · Evening Snack · Dinner — AI-personalized for your health goals.</p></div>
+    <div class="fc"><div class="fc-i">🥗</div><h3>Nutrition Intelligence</h3><p>Real-time macro tracking, calorie counts, health scores tailored for diabetic, fitness, and weight-loss goals.</p></div>
+    <div class="fc"><div class="fc-i">📺</div><h3>Tamil YouTube Links</h3><p>Every recipe links to Village Cooking Channel (35M+), Madras Samayal (5M+), HomeCooking Tamil (4M+).</p></div>
+    <div class="fc"><div class="fc-i">🏛️</div><h3>7 Regional Cuisines</h3><p>Tamil Nadu · Chettinad · Kerala · Andhra Pradesh · Telangana · Karnataka · Kongunadu — all covered.</p></div>
+  </div>
+</section>
+
+<div class="cta">
+  <span class="ta">சமைக்க ஆரம்பிக்கலாமா?</span>
+  <h2>Start Cooking <em>Authentically</em> Today</h2>
+  <p>Join thousands of South Indian food lovers cooking smarter with AI. Free — no credit card needed.</p>
+  <div class="hero-btns" style="justify-content:center">
+    <a href="/register" class="hbtn p">🍛 Create Free Account →</a>
+    <a href="/login" class="hbtn s" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)">Sign In</a>
+  </div>
+</div>
+
+<footer>
+  <div class="fi">
+    <div><div class="fl">Samayal<b>.AI</b></div><div class="fd">The most intelligent South Indian cooking assistant — powered by Groq AI, rooted in tradition.</div><div style="font-family:'Noto Sans Tamil',sans-serif;font-size:.85rem;color:rgba(255,255,255,.35)">உணவே மருந்து</div></div>
+    <div class="fc-col"><h4>Cuisines</h4><ul><li><a href="/register">Tamil Nadu</a></li><li><a href="/register">Chettinad</a></li><li><a href="/register">Kerala</a></li><li><a href="/register">Andhra Pradesh</a></li><li><a href="/register">Telangana</a></li><li><a href="/register">Karnataka</a></li></ul></div>
+    <div class="fc-col"><h4>Features</h4><ul><li><a href="/register">AI Recipe Generator</a></li><li><a href="/register">Bilingual Ingredients</a></li><li><a href="/register">Nutrition Tracker</a></li><li><a href="/register">7-Day Meal Planner</a></li><li><a href="/register">Tamil YouTube Links</a></li></ul></div>
+  </div>
+  <div class="fb2"><span>© 2025 SamayalAI · Built for South Indian food lovers worldwide</span><span>Powered by Groq AI · Neon PostgreSQL</span></div>
+</footer>
+
+<script>
+if (localStorage.getItem('samayal_token') && window.location.pathname === '/') {
+  window.location.href = '/dashboard';
+}
+</script>
+</body>
+</html>

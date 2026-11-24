@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard – SamayalAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;background:#F5F2EC}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:62px;background:rgba(253,246,236,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;padding:0 1.5rem;gap:1rem}
+.logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:#B5490A;text-decoration:none}.logo b{color:#E8610A}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:10px}
+.av{width:34px;height:34px;border-radius:50%;background:#E8610A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800}
+.nav-name{font-size:.85rem;font-weight:600;color:#1A1A1C}
+.nav-out{padding:6px 14px;background:transparent;border:1.5px solid rgba(0,0,0,.12);border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:#5A5856;transition:all .18s}
+.nav-out:hover{border-color:#E8610A;color:#E8610A}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh;padding-top:62px}
+/* SIDEBAR */
+.sb{background:#fff;border-right:1px solid rgba(0,0,0,.07);padding:1.25rem .75rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto}
+.sb-sec{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9A9490;padding:10px 10px 4px}
+.sb-btn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.85rem;font-weight:500;color:#5A5856;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;text-decoration:none}
+.sb-btn:hover,.sb-btn.act{background:#FFF3E8;color:#E8610A;font-weight:600}
+.sb-ic{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+/* MAIN */
+.main{padding:2rem;max-width:860px}
+.welcome{background:linear-gradient(135deg,#B5490A,#E8610A);border-radius:16px;padding:1.5rem 2rem;color:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem}
+.welcome h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:4px}
+.welcome p{color:rgba(255,255,255,.8);font-size:.875rem}
+.welcome-e{font-size:3rem}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.75rem}
+.qc{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;padding:1.1rem;cursor:pointer;transition:all .2s;text-align:center}
+.qc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:rgba(232,97,10,.25)}
+.qc-i{font-size:1.75rem;display:block;margin-bottom:6px}
+.qc h4{font-size:.82rem;font-weight:700;color:#1A1A1C;margin-bottom:2px}
+.qc p{font-size:.72rem;color:#9A9490}
+/* CHAT */
+.cp{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;overflow:hidden;margin-bottom:1.75rem}
+.ch{padding:1rem 1.25rem;background:#FDF6EC;border-bottom:1px solid rgba(0,0,0,.07);display:flex;align-items:center;gap:12px}
+.ch-av{width:38px;height:38px;background:#E8610A;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.ch h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:800}
+.ch .online{font-size:.72rem;color:#2D6A4F;display:flex;align-items:center;gap:5px}
+.ch .online::before{content:'';width:6px;height:6px;border-radius:50%;background:#2D6A4F;display:inline-block}
+.msgs{padding:1.25rem;display:flex;flex-direction:column;gap:1rem;height:420px;overflow-y:auto;scroll-behavior:smooth}
+.msg{display:flex;gap:9px}
+.msg.u{flex-direction:row-reverse}
+.bub{max-width:82%;padding:.8rem 1rem;line-height:1.65;font-size:.9rem;border-radius:16px}
+.msg.ai .bub{background:#F5F2EC;border-radius:4px 16px 16px 16px;color:#1A1A1C}
+.msg.u .bub{background:#E8610A;color:#fff;border-radius:16px 4px 16px 16px}
+.m-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.msg.ai .m-av{background:#FFF5CC}
+.msg.u .m-av{background:#FF8C38;color:#fff;font-size:.7rem;font-weight:800}
+/* Bilingual ingredients */
+.ing-block{background:#FDF6EC;border-radius:10px;padding:.875rem 1rem;margin:.5rem 0;border:1px solid rgba(232,97,10,.15)}
+.ing-title{font-size:.75rem;font-weight:700;color:#B5490A;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem}
+.ing-row{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(0,0,0,.07)}
+.ing-row:last-child{border-bottom:none}
+.ing-en{font-size:.875rem;font-weight:600;color:#1A1A1C}
+.ing-sep{color:#E8610A;font-weight:800}
+.ing-ta{font-family:'Noto Sans Tamil',sans-serif;font-size:.82rem;color:#5A5856}
+.ing-qty{margin-left:auto;font-size:.75rem;font-weight:700;color:#E8610A;background:#FFF3E8;padding:2px 8px;border-radius:99px;white-space:nowrap}
+/* YouTube card */
+.yt{display:flex;gap:10px;background:#FFF8F3;border:1px solid rgba(255,0,0,.1);border-radius:10px;padding:.875rem;margin:.4rem 0;text-decoration:none;color:inherit;transition:all .18s}
+.yt:hover{border-color:rgba(255,0,0,.3);transform:translateY(-1px)}
+.yt-ic{width:32px;height:32px;background:#FF0000;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#fff;flex-shrink:0}
+.yt-inf h5{font-size:.82rem;font-weight:700;color:#1A1A1C;margin-bottom:2px}
+.yt-inf p{font-size:.72rem;color:#5A5856}
+/* Quick bar */
+.qbar{padding:.75rem 1.25rem;border-top:1px solid rgba(0,0,0,.07);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.qbar::-webkit-scrollbar{display:none}
+.qb{white-space:nowrap;background:#F5F2EC;border:1px solid rgba(0,0,0,.1);border-radius:99px;padding:5px 13px;font-size:.78rem;font-weight:500;cursor:pointer;color:#5A5856;transition:all .18s;flex-shrink:0;font-family:'DM Sans',sans-serif}
+.qb:hover{background:#E8610A;color:#fff;border-color:#E8610A}
+/* Input */
+.ir{padding:1rem 1.25rem;border-top:1px solid rgba(0,0,0,.07);display:flex;gap:10px}
+.ci{flex:1;border:1.5px solid rgba(0,0,0,.12);border-radius:10px;padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;resize:none;outline:none;background:#F5F2EC;color:#1A1A1C;transition:border-color .18s;line-height:1.5;max-height:100px}
+.ci:focus{border-color:#E8610A;background:#fff}
+.send{width:42px;height:42px;border-radius:50%;background:#E8610A;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;transition:all .18s;flex-shrink:0}
+.send:hover{background:#B5490A;transform:scale(1.06)}
+.send:disabled{background:rgba(0,0,0,.12);cursor:not-allowed;transform:none}
+/* Loading */
+.dots{display:flex;gap:4px;align-items:center}
+.dot{width:7px;height:7px;border-radius:50%;background:#E8610A;animation:dp 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes dp{0%,80%,100%{opacity:.3;transform:scale(.85)}40%{opacity:1;transform:scale(1.1)}}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sb{display:none}.main{padding:1rem}.qa{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/dashboard" class="logo">Samayal<b>.AI</b></a>
+  <div class="nav-r">
+    <span class="nav-name" id="nn">Chef</span>
+    <div class="av" id="av">U</div>
+    <button class="nav-out" onclick="logout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sb">
+    <div class="sb-sec">Cook</div>
+    <button class="sb-btn act"><span class="sb-ic">🤖</span>AI Chef</button>
+    <a href="/planner" class="sb-btn"><span class="sb-ic">🗓️</span>Meal Planner</a>
+    <a href="/profile" class="sb-btn"><span class="sb-ic">👤</span>My Profile</a>
+    <div class="sb-sec">South Indian States</div>
+    <button class="sb-btn" onclick="ask('Classic Tamil Nadu sambar recipe with bilingual ingredients')"><span class="sb-ic">🏛️</span>Tamil Nadu</button>
+    <button class="sb-btn" onclick="ask('Chettinad chicken curry full recipe')"><span class="sb-ic">🌶️</span>Chettinad</button>
+    <button class="sb-btn" onclick="ask('Kerala fish curry with coconut milk recipe')"><span class="sb-ic">🥥</span>Kerala</button>
+    <button class="sb-btn" onclick="ask('Andhra Pradesh gongura pachadi recipe')"><span class="sb-ic">🫙</span>Andhra Pradesh</button>
+    <button class="sb-btn" onclick="ask('Telangana Hyderabadi biryani recipe')"><span class="sb-ic">🍗</span>Telangana</button>
+    <button class="sb-btn" onclick="ask('Karnataka Bisi Bele Bath recipe')"><span class="sb-ic">🍳</span>Karnataka</button>
+    <button class="sb-btn" onclick="ask('Kongunadu village chicken curry recipe')"><span class="sb-ic">🌿</span>Kongunadu</button>
+    <div class="sb-sec">Health</div>
+    <button class="sb-btn" onclick="ask('Diabetic friendly South Indian breakfast options')"><span class="sb-ic">🩺</span>Diabetic Friendly</button>
+    <button class="sb-btn" onclick="ask('High protein South Indian meals for gym')"><span class="sb-ic">💪</span>High Protein</button>
+    <button class="sb-btn" onclick="ask('Low calorie South Indian weight loss recipes')"><span class="sb-ic">⚖️</span>Weight Loss</button>
+  </aside>
+
+  <main class="main">
+    <div class="welcome" id="wb" style="display:none">
+      <div><h2>வணக்கம், <span id="wn">Chef</span>! 🙏</h2><p>What shall we cook today?</p></div>
+      <div class="welcome-e">🍛</div>
+    </div>
+
+    <div class="qa">
+      <div class="qc" onclick="ask('I want to cook Pulikolambu. Give full recipe with bilingual ingredients')">
+        <span class="qc-i">🫙</span><h4>Pulikolambu</h4><p>புளிக்குழம்பு</p>
+      </div>
+      <div class="qc" onclick="ask('Sambar recipe Tamil style full details')">
+        <span class="qc-i">🍲</span><h4>Sambar</h4><p>சாம்பார்</p>
+      </div>
+      <div class="qc" onclick="ask('Masala Dosa with potato filling full recipe')">
+        <span class="qc-i">🫓</span><h4>Masala Dosa</h4><p>மசாலா தோசை</p>
+      </div>
+      <div class="qc" onclick="window.location.href='/planner'">
+        <span class="qc-i">🗓️</span><h4>Meal Planner</h4><p>7-day plan</p>
+      </div>
+    </div>
+
+    <div class="cp">
+      <div class="ch">
+        <div class="ch-av">🤖</div>
+        <div><h3>SamayalAI Chef</h3><div class="online">Online · Powered by Groq AI</div></div>
+      </div>
+      <div class="msgs" id="msgs">
+        <div class="msg ai">
+          <div class="m-av">🤖</div>
+          <div class="bub">
+            வணக்கம்! 🙏 I'm your SamayalAI Chef!<br><br>
+            Ask me anything — <strong>Pulikolambu, Sambar, Chettinad Chicken</strong> — any South Indian dish.<br><br>
+            I'll give you the full recipe with ingredients in both English and Tamil:<br>
+            <div class="ing-block">
+              <div class="ing-title">🧂 Sample Bilingual Ingredients</div>
+              <div class="ing-row"><span class="ing-en">Tamarind</span><span class="ing-sep">/</span><span class="ing-ta">புளி</span><span class="ing-qty">1 lemon-size / 1 எலுமிச்சை அளவு</span></div>
+              <div class="ing-row"><span class="ing-en">Mustard Seeds</span><span class="ing-sep">/</span><span class="ing-ta">கடுகு</span><span class="ing-qty">1 tsp / 1 தேக்கரண்டி</span></div>
+              <div class="ing-row"><span class="ing-en">Sesame Oil</span><span class="ing-sep">/</span><span class="ing-ta">நல்லெண்ணெய்</span><span class="ing-qty">2 tbsp / 2 தேக்கரண்டி</span></div>
+            </div>
+            What would you like to cook today? 🍛
+          </div>
+        </div>
+      </div>
+      <div class="qbar">
+        <button class="qb" onclick="ask('I want to cook Pulikolambu')">🫙 Pulikolambu</button>
+        <button class="qb" onclick="ask('Sambar recipe for 4 people')">🍲 Sambar</button>
+        <button class="qb" onclick="ask('Chettinad chicken curry')">🌶️ Chettinad Chicken</button>
+        <button class="qb" onclick="ask('Kerala fish curry with coconut milk')">🐟 Kerala Fish</button>
+        <button class="qb" onclick="ask('High protein South Indian breakfast')">💪 High Protein</button>
+        <button class="qb" onclick="ask('Diabetic friendly South Indian lunch')">🩺 Diabetic</button>
+        <button class="qb" onclick="ask('Rasam recipe')">🍵 Rasam</button>
+        <button class="qb" onclick="ask('Traditional Pongal recipe')">🍚 Pongal</button>
+      </div>
+      <div class="ir">
+        <textarea class="ci" id="ci" rows="1" placeholder="Ask anything… e.g. I want to cook pulikolambu" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
+        <button class="send" id="sbtn" onclick="send()">➤</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+'use strict';
+var _u = null;
+try { _u = JSON.parse(localStorage.getItem('samayal_user')||'null'); } catch(_){}
+if (!localStorage.getItem('samayal_token')) { window.location.href = '/login'; }
+
+if (_u) {
+  var fn = (_u.name||'Chef').split(' ')[0];
+  document.getElementById('nn').textContent = fn;
+  document.getElementById('av').textContent = _u.initials || fn[0];
+  document.getElementById('wn').textContent = fn;
+}
+if (new URLSearchParams(window.location.search).get('welcome')) {
+  document.getElementById('wb').style.display = 'flex';
+}
+// Pending query from other pages
+var pq = localStorage.getItem('samayal_pending_query');
+if (pq) { localStorage.removeItem('samayal_pending_query'); setTimeout(function(){ ask(pq); }, 700); }
+
+var sid = null;
+
+function grow(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
+function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+function ask(q) { document.getElementById('ci').value=q; send(); }
+
+function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function fmt(text) {
+  // Bold
+  text = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  // H2 headers
+  text = text.replace(/^##\s+(.+)$/gm,'<div style="font-family:Playfair Display,serif;font-size:1rem;font-weight:800;color:#B5490A;margin:.75rem 0 .3rem;padding-bottom:3px;border-bottom:2px solid #FFF3E8">$1</div>');
+  // H3 headers
+  text = text.replace(/^###\s+(.+)$/gm,'<div style="font-weight:700;color:#2D6A4F;margin:.5rem 0 .2rem;font-size:.9rem">$1</div>');
+  // Bilingual ingredient lines: "• Tamarind 1 cup / புளி 1 கப்"
+  text = text.replace(/^[•\-\*]\s*([^/\n]+?)\s*\/\s*([^\n]+)$/gm, function(_, en, ta) {
+    var parts = en.trim().split(/\s+/);
+    var qty   = '';
+    var name  = en.trim();
+    // Try to detect quantity at end
+    var qMatch = en.trim().match(/^(.+?)\s+([\d¼½¾⅓⅔]+\s*(?:cup|tbsp|tsp|g|kg|ml|L|piece|sprig|bunch|lemon|pinch|a\s+pinch|ball|strand|leaf|leaves|pods?|clove|inch|\w+)s?)$/i);
+    if (qMatch) { name = qMatch[1]; qty = qMatch[2]; }
+    var taParts = ta.trim().split(/\s+/);
+    var taName  = ta.trim();
+    var taQty   = '';
+    var taMatch = ta.trim().match(/^(.+?)\s+([\d¼½¾⅓⅔]+.+)$/);
+    if (taMatch) { taName = taMatch[1]; taQty = taMatch[2]; }
+    return '<div class="ing-row"><span class="ing-en">'+(qty?name:en.trim())+'</span><span class="ing-sep">/</span><span class="ing-ta">'+(taQty?taName:ta.trim())+'</span>'+(qty||taQty?'<span class="ing-qty">'+(qty||'')+' / '+(taQty||'')+'</span>':'')+'</div>';
+  });
+  // Regular bullets
+  text = text.replace(/^[•\-\*]\s+(.+)$/gm,'<div style="padding:2px 0 2px 1rem;position:relative;font-size:.875rem"><span style="position:absolute;left:0;color:#E8610A">•</span>$1</div>');
+  // Numbered steps
+  text = text.replace(/^(\d+)\.\s+(.+)$/gm,'<div style="padding:4px 0 4px 1.5rem;position:relative;font-size:.875rem"><span style="position:absolute;left:0;font-weight:700;color:#E8610A">$1.</span>$2</div>');
+  // YouTube links
+  text = text.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:#E8610A;word-break:break-all">$1</a>');
+  // Newlines
+  text = text.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  return text;
+}
+
+function addMsg(role, html) {
+  var box = document.getElementById('msgs');
+  var d   = document.createElement('div');
+  d.className = 'msg ' + role;
+  var av = role==='u' ? (_u&&_u.initials?_u.initials:'ME') : '🤖';
+  d.innerHTML = '<div class="m-av">'+av+'</div><div class="bub">'+html+'</div>';
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+  return d;
+}
+
+async function send() {
+  var inp  = document.getElementById('ci');
+  var msg  = inp.value.trim();
+  if (!msg) return;
+  inp.value = ''; inp.style.height = 'auto';
+  var btn = document.getElementById('sbtn');
+  btn.disabled = true;
+  addMsg('u', esc(msg));
+  var ld = addMsg('ai','<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span style="font-size:.78rem;color:#9A9490;margin-left:6px">SamayalAI is thinking…</span>');
+  try {
+    var res = await fetch('/api/ai/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.getItem('samayal_token')},
+      body: JSON.stringify({ message: msg, session_id: sid })
+    });
+    var data;
+    try { data = await res.json(); } catch(_) { throw new Error('Invalid server response'); }
+    ld.remove(); btn.disabled = false;
+    if (res.status === 401) { localStorage.clear(); window.location.href='/login?reason=expired'; return; }
+    if (data.success) {
+      sid = data.session_id;
+      addMsg('ai', fmt(data.reply));
+    } else {
+      var em = data.error||'Something went wrong.';
+      if (/timeout|waking|terminated/i.test(em)) em = '⏳ Database is starting up. Wait 10 seconds.';
+      addMsg('ai','<span style="color:#B91C1C">⚠️ '+esc(em)+'</span>');
+    }
+  } catch(e) {
+    ld.remove(); btn.disabled = false;
+    addMsg('ai','<span style="color:#B91C1C">⚠️ Cannot reach server. Make sure <strong>node backend/server.js</strong> is running.</span>');
+  }
+}
+
+function logout() {
+  fetch('/api/auth/logout',{method:'POST',headers:{Authorization:'Bearer '+localStorage.getItem('samayal_token')}}).catch(()=>{});
+  localStorage.clear();
+  window.location.href = '/login';
+}
+</script>
+</body>
+</html>

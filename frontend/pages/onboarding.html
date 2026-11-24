@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Setup – SamayalAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#FDF6EC;min-height:100vh;-webkit-font-smoothing:antialiased}
+.nav{background:rgba(253,246,236,.95);border-bottom:1px solid rgba(0,0,0,.08);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:#B5490A}
+.nav-logo b{color:#E8610A}
+.prog{height:3px;background:rgba(0,0,0,.08);position:fixed;top:60px;left:0;right:0;z-index:9}
+.prog-fill{height:100%;background:#E8610A;border-radius:0 99px 99px 0;transition:width .4s ease}
+.wrap{max-width:640px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.step-dots{display:flex;gap:8px;justify-content:center;margin-bottom:2.5rem}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(0,0,0,.12);transition:all .3s}
+.dot.active{background:#E8610A;width:28px;border-radius:99px}
+.dot.done{background:#2D6A4F}
+.panel{display:none;animation:fi .3s ease}
+.panel.show{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ph{text-align:center;margin-bottom:2rem}
+.ph .emoji{font-size:3rem;display:block;margin-bottom:.75rem}
+.ph h2{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:900;color:#1A1A1C;margin-bottom:.4rem}
+.ph p{color:#5A5856;font-size:.9rem}
+.fg{margin-bottom:1.1rem}
+.fg label{display:block;font-size:.78rem;font-weight:600;color:#5A5856;margin-bottom:5px}
+select,.fi{width:100%;padding:.78rem 1rem;border:1.5px solid rgba(0,0,0,.14);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.93rem;background:#fff;color:#1A1A1C;outline:none;transition:border-color .18s;-webkit-appearance:none;appearance:none}
+select:focus,.fi:focus{border-color:#E8610A;box-shadow:0 0 0 3px rgba(232,97,10,.1)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 14px;border:1.5px solid rgba(0,0,0,.12);border-radius:99px;font-size:.83rem;font-weight:500;cursor:pointer;background:#fff;color:#5A5856;transition:all .18s;user-select:none}
+.chip:hover{border-color:#E8610A;color:#E8610A}
+.chip.on{background:#E8610A;color:#fff;border-color:#E8610A}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rcard{background:#fff;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:all .18s}
+.rcard:hover{border-color:#E8610A;transform:translateY(-2px)}
+.rcard.on{border-color:#E8610A;background:#FFF3E8}
+.rcard .re{font-size:2rem;display:block;margin-bottom:5px}
+.rcard h4{font-size:.82rem;font-weight:700}
+.rcard p{font-size:.68rem;color:#9A9490;margin-top:2px}
+.spice{display:flex;gap:8px}
+.sp{flex:1;padding:8px 4px;border:1.5px solid rgba(0,0,0,.1);border-radius:10px;text-align:center;cursor:pointer;background:#fff;transition:all .18s}
+.sp:hover{border-color:#E8610A}
+.sp.on{border-color:#E8610A;background:#FFF3E8}
+.sp .se{font-size:1.4rem;display:block;margin-bottom:3px}
+.sp span{font-size:.72rem;font-weight:600;color:#5A5856}
+.nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:2rem}
+.btn-next{padding:.85rem 2rem;background:#E8610A;color:#fff;border:none;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:8px}
+.btn-next:hover{background:#B5490A;transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,97,10,.3)}
+.btn-next:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-back{padding:.85rem 1.5rem;background:transparent;border:1.5px solid rgba(0,0,0,.14);border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;color:#5A5856;transition:all .18s}
+.btn-back:hover{border-color:#E8610A;color:#E8610A}
+.summary{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem}
+.summary h4{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:1rem}
+.sum-row{display:flex;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:.875rem}
+.sum-row:last-child{border-bottom:none}
+.sum-lbl{color:#9A9490;width:110px;flex-shrink:0}
+.sum-val{font-weight:600;color:#1A1A1C}
+.spin{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:600px){.rgrid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.spice{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Samayal<b>.AI</b></div>
+  <span style="font-size:.82rem;color:#9A9490">Step <span id="stepNum">1</span> of 4</span>
+</nav>
+<div class="prog"><div class="prog-fill" id="progFill" style="width:25%"></div></div>
+
+<div class="wrap">
+  <div class="step-dots" id="stepDots">
+    <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="panel show" id="p1">
+    <div class="ph"><span class="emoji">📍</span><h2>Where are you from?</h2><p>We'll tailor recipes to your region's ingredients and style.</p></div>
+    <div class="grid2">
+      <div class="fg">
+        <label>State / Region</label>
+        <select id="s-state">
+          <option value="">Select state</option>
+          <optgroup label="South India">
+            <option value="Tamil Nadu">Tamil Nadu</option><option value="Kerala">Kerala</option>
+            <option value="Karnataka">Karnataka</option><option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Telangana">Telangana</option><option value="Puducherry">Puducherry</option>
+          </optgroup>
+          <optgroup label="Other India">
+            <option value="Maharashtra">Maharashtra</option><option value="Delhi">Delhi</option>
+            <option value="Gujarat">Gujarat</option><option value="Other">Other State</option>
+          </optgroup>
+          <optgroup label="Abroad">
+            <option value="Singapore">Singapore</option><option value="USA">United States</option>
+            <option value="UK">United Kingdom</option><option value="Canada">Canada</option>
+            <option value="UAE">UAE</option><option value="Australia">Australia</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fg"><label>City (Optional)</label><input class="fi" id="s-city" placeholder="e.g. Chennai"/></div>
+    </div>
+    <div class="fg">
+      <label>Preferred Cuisines (select all you like)</label>
+      <div class="rgrid" id="regions">
+        <div class="rcard on" data-v="Tamil Nadu"><span class="re">🏛️</span><h4>Tamil Nadu</h4><p>Sambar, Rasam</p></div>
+        <div class="rcard" data-v="Chettinad"><span class="re">🌶️</span><h4>Chettinad</h4><p>Fiery spices</p></div>
+        <div class="rcard" data-v="Kerala"><span class="re">🥥</span><h4>Kerala</h4><p>Coconut curries</p></div>
+        <div class="rcard" data-v="Andhra Pradesh"><span class="re">🫙</span><h4>Andhra Pradesh</h4><p>Bold & spicy</p></div>
+        <div class="rcard" data-v="Telangana"><span class="re">🍗</span><h4>Telangana</h4><p>Hyderabadi style</p></div>
+        <div class="rcard" data-v="Karnataka"><span class="re">🍳</span><h4>Karnataka</h4><p>Bisi Bele Bath</p></div>
+      </div>
+    </div>
+    <div class="nav-btns"><div></div><button class="btn-next" onclick="next(1)">Continue →</button></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="panel" id="p2">
+    <div class="ph"><span class="emoji">🥗</span><h2>Your Dietary Style</h2><p>Help us serve the right recipes for your lifestyle.</p></div>
+    <div class="fg">
+      <label>Diet Type</label>
+      <div class="chips" id="diet">
+        <div class="chip on" data-v="both">🍽️ Everything</div>
+        <div class="chip" data-v="vegetarian">🌿 Vegetarian</div>
+        <div class="chip" data-v="vegan">🥦 Vegan</div>
+        <div class="chip" data-v="non-vegetarian">🍗 Non-Veg</div>
+        <div class="chip" data-v="eggetarian">🥚 Eggetarian</div>
+        <div class="chip" data-v="jain">🙏 Jain</div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Spice Tolerance</label>
+      <div class="spice" id="spice">
+        <div class="sp" data-v="mild"><span class="se">😌</span><span>Mild</span></div>
+        <div class="sp on" data-v="medium"><span class="se">😊</span><span>Medium</span></div>
+        <div class="sp" data-v="spicy"><span class="se">😤</span><span>Spicy</span></div>
+        <div class="sp" data-v="very-spicy"><span class="se">🔥</span><span>Very Hot</span></div>
+        <div class="sp" data-v="chettinad"><span class="se">💀</span><span>Chettinad</span></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Health Goals</label>
+      <div class="chips" id="health">
+        <div class="chip" data-v="weight-loss">⚖️ Weight Loss</div>
+        <div class="chip" data-v="high-protein">💪 High Protein</div>
+        <div class="chip" data-v="diabetic-friendly">🩺 Diabetic Friendly</div>
+        <div class="chip" data-v="heart-healthy">❤️ Heart Healthy</div>
+        <div class="chip" data-v="gym-diet">🏋️ Gym Diet</div>
+        <div class="chip" data-v="kids-nutrition">👶 Kids</div>
+        <div class="chip" data-v="pregnancy">🤰 Pregnancy</div>
+        <div class="chip" data-v="balanced">🎯 Balanced</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="back(2)">← Back</button>
+      <button class="btn-next" onclick="next(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="panel" id="p3">
+    <div class="ph"><span class="emoji">❤️</span><h2>Favourite Dishes</h2><p>Pick the South Indian dishes you love most.</p></div>
+    <div class="fg">
+      <div class="chips" id="favs">
+        <div class="chip" data-v="Idli">🫓 Idli</div>
+        <div class="chip" data-v="Dosa">🥞 Dosa</div>
+        <div class="chip" data-v="Sambar">🍲 Sambar</div>
+        <div class="chip" data-v="Pulikolambu">🫙 Pulikolambu</div>
+        <div class="chip" data-v="Rasam">🍵 Rasam</div>
+        <div class="chip" data-v="Pongal">🍚 Pongal</div>
+        <div class="chip" data-v="Biryani">🍛 Biryani</div>
+        <div class="chip" data-v="Chettinad Chicken">🍗 Chettinad Chicken</div>
+        <div class="chip" data-v="Fish Curry">🐟 Fish Curry</div>
+        <div class="chip" data-v="Avial">🥗 Avial</div>
+        <div class="chip" data-v="Upma">🫕 Upma</div>
+        <div class="chip" data-v="Vada">🧆 Vada</div>
+        <div class="chip" data-v="Payasam">🍮 Payasam</div>
+        <div class="chip" data-v="Egg Curry">🥚 Egg Curry</div>
+        <div class="chip" data-v="Mutton Kuzhambu">🥩 Mutton Kuzhambu</div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Cooking Skill</label>
+      <div class="chips" id="skill">
+        <div class="chip on" data-v="beginner">🌱 Beginner</div>
+        <div class="chip" data-v="intermediate">🍳 Intermediate</div>
+        <div class="chip" data-v="advanced">👨‍🍳 Advanced</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="back(3)">← Back</button>
+      <button class="btn-next" onclick="next(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="panel" id="p4">
+    <div class="ph"><span class="emoji">🚀</span><h2>Ready to Cook!</h2><p>Review your profile and launch SamayalAI.</p></div>
+    <div class="summary" id="summary"></div>
+    <div id="sb" style="display:none;padding:.8rem 1rem;border-radius:10px;font-size:.875rem;font-weight:500;margin-bottom:1rem;border:1px solid transparent;align-items:center;gap:8px"></div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="back(4)">← Back</button>
+      <button class="btn-next" id="launchBtn" onclick="submit()">🚀 Launch SamayalAI</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+if (!localStorage.getItem('samayal_token')) window.location.href = '/login';
+
+var cur = 1;
+
+// Multi-select chips
+function initChips(id, single) {
+  document.querySelectorAll('#'+id+' .chip,.sp').forEach(function(c) {
+    c.addEventListener('click', function() {
+      if (single) { document.querySelectorAll('#'+id+' .chip,#'+id+' .sp').forEach(function(x){x.classList.remove('on')}); }
+      c.classList.toggle('on');
+    });
+  });
+}
+function initSingle(id) {
+  document.querySelectorAll('#'+id+' .chip,#'+id+' .sp').forEach(function(c) {
+    c.addEventListener('click', function() {
+      document.querySelectorAll('#'+id+' .chip,#'+id+' .sp').forEach(function(x){x.classList.remove('on')});
+      c.classList.add('on');
+    });
+  });
+}
+
+document.querySelectorAll('#regions .rcard').forEach(function(c) {
+  c.addEventListener('click', function(){ c.classList.toggle('on'); });
+});
+initSingle('diet'); initSingle('spice'); initSingle('skill');
+initChips('health'); initChips('favs');
+
+function getSelected(id) {
+  return Array.from(document.querySelectorAll('#'+id+' .chip.on,#'+id+' .sp.on')).map(function(c){return c.dataset.v});
+}
+
+function updateProgress(step) {
+  document.getElementById('progFill').style.width = (step/4*100)+'%';
+  document.getElementById('stepNum').textContent = step;
+  document.querySelectorAll('.dot').forEach(function(d,i){
+    d.className = 'dot'+(i+1<step?' done':i+1===step?' active':'');
+  });
+}
+
+function next(from) {
+  if (from === 1 && !document.getElementById('s-state').value) {
+    alert('Please select your state.'); return;
+  }
+  document.getElementById('p'+from).classList.remove('show');
+  cur = from + 1;
+  document.getElementById('p'+cur).classList.add('show');
+  updateProgress(cur);
+  if (cur === 4) buildSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function back(from) {
+  document.getElementById('p'+from).classList.remove('show');
+  cur = from - 1;
+  document.getElementById('p'+cur).classList.add('show');
+  updateProgress(cur);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildSummary() {
+  var regions = Array.from(document.querySelectorAll('#regions .rcard.on')).map(function(c){return c.dataset.v});
+  var items = [
+    {icon:'📍', label:'Location', val: [document.getElementById('s-city').value, document.getElementById('s-state').value].filter(Boolean).join(', ')||'—'},
+    {icon:'🗺️', label:'Cuisines',  val: regions.join(', ')||'Tamil Nadu'},
+    {icon:'🥗', label:'Diet',      val: getSelected('diet')[0]||'both'},
+    {icon:'🌶️', label:'Spice',     val: getSelected('spice')[0]||'medium'},
+    {icon:'🎯', label:'Health',    val: getSelected('health').join(', ')||'Balanced'},
+    {icon:'❤️', label:'Favourites',val: getSelected('favs').slice(0,3).join(', ')+(getSelected('favs').length>3?' +more':'')||'—'},
+    {icon:'👨‍🍳', label:'Skill',    val: getSelected('skill')[0]||'beginner'},
+  ];
+  document.getElementById('summary').innerHTML = '<h4>📋 Your Profile</h4>'+
+    items.map(function(i){return '<div class="sum-row"><span>'+i.icon+'</span><span class="sum-lbl">'+i.label+'</span><span class="sum-val">'+i.val+'</span></div>'}).join('');
+}
+
+function showSB(color, msg) {
+  var el = document.getElementById('sb');
+  el.style.background = color.bg; el.style.borderColor = color.bd; el.style.color = color.tx;
+  el.style.display = 'flex'; el.innerHTML = msg;
+}
+
+async function submit() {
+  var btn = document.getElementById('launchBtn');
+  var regions = Array.from(document.querySelectorAll('#regions .rcard.on')).map(function(c){return c.dataset.v});
+  var payload = {
+    state: document.getElementById('s-state').value,
+    city: document.getElementById('s-city').value,
+    preferred_regions: regions,
+    dietary_preference: getSelected('diet')[0]||'both',
+    spice_level: getSelected('spice')[0]||'medium',
+    health_goals: getSelected('health'),
+    favorite_dishes: getSelected('favs'),
+    cooking_skill: getSelected('skill')[0]||'beginner',
+    allergies: [],
+  };
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div> Saving…';
+  showSB({bg:'#EFF6FF',bd:'#BFDBFE',tx:'#1E40AF'}, '⏳ Saving your preferences…');
+  try {
+    var res = await fetch('/api/auth/onboarding', {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.getItem('samayal_token')},
+      body: JSON.stringify(payload)
+    });
+    var data = await res.json();
+    if (data.success) {
+      showSB({bg:'#ECFDF5',bd:'#A7F3D0',tx:'#065F46'}, '✅ Profile saved! Launching SamayalAI…');
+      setTimeout(function(){ window.location.href = '/dashboard?welcome=1'; }, 1000);
+    } else {
+      showSB({bg:'#FEF2F2',bd:'#FECACA',tx:'#B91C1C'}, '❌ '+(data.error||'Failed to save.'));
+      btn.disabled=false; btn.innerHTML='🚀 Launch SamayalAI';
+    }
+  } catch(e) {
+    showSB({bg:'#FEF2F2',bd:'#FECACA',tx:'#B91C1C'}, '❌ Cannot reach server.');
+    btn.disabled=false; btn.innerHTML='🚀 Launch SamayalAI';
+  }
+}
+</script>
+</body>
+</html>

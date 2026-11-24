@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Register – SamayalAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+body{display:flex;background:#FDF6EC}
+.L{width:44%;min-height:100vh;background:linear-gradient(155deg,#0A1F0F,#1A4A2A,#2D6A4F);padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.brand{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:#fff}.brand b{color:#52B788}
+.ta{font-family:'Noto Sans Tamil',sans-serif;font-size:.9rem;color:#52B788;margin-bottom:.5rem}
+.L h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#fff;line-height:1.2;margin-bottom:.8rem}
+.L h2 em{font-style:italic;color:#F5C842}
+.L p{color:rgba(255,255,255,.62);font-size:.875rem;line-height:1.7;margin-bottom:1.4rem;max-width:300px}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.8);font-size:.85rem}
+.sn{width:24px;height:24px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;flex-shrink:0}
+.fe{position:absolute;right:14px;top:36%;font-size:2rem;line-height:2.2;opacity:.4;animation:bob 5s ease-in-out infinite;pointer-events:none}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+.lf{color:rgba(255,255,255,.25);font-size:.72rem}
+.R{flex:1;background:#fff;display:flex;align-items:flex-start;justify-content:center;padding:2.5rem;min-height:100vh;overflow-y:auto}
+.card{width:100%;max-width:400px;padding-top:2rem}
+.card h1{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#1A1A1C;margin-bottom:4px}
+.sub{color:#5A5856;font-size:.88rem;margin-bottom:1.4rem}
+.sub a{color:#E8610A;font-weight:600;text-decoration:none}
+
+/* STATUS BAR — controlled by style.display, not CSS class */
+#sb{padding:.8rem 1rem;border-radius:10px;font-size:.875rem;font-weight:500;
+    margin-bottom:1rem;border:1px solid transparent;line-height:1.4;
+    display:none;align-items:flex-start;gap:10px;word-break:break-word}
+#sb.info   {background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF}
+#sb.error  {background:#FEF2F2;border-color:#FECACA;color:#B91C1C}
+#sb.success{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
+#sb.warning{background:#FFFBEB;border-color:#FDE68A;color:#92400E}
+
+.fg{margin-bottom:.95rem}
+.fg label{display:block;font-size:.78rem;font-weight:600;color:#5A5856;margin-bottom:5px}
+.fg input[type=text],.fg input[type=email]{
+  display:block;width:100%;padding:.8rem 1rem;border:1.5px solid rgba(0,0,0,.14);
+  border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.94rem;
+  background:#F5F2EC;color:#1A1A1C;outline:none;
+  transition:border-color .18s,background .18s,box-shadow .18s;-webkit-appearance:none}
+.fg input[type=text]:focus,.fg input[type=email]:focus{
+  border-color:#E8610A;background:#fff;box-shadow:0 0 0 3px rgba(232,97,10,.12)}
+.fg input::placeholder{color:#9A9490}
+
+/* PASSWORD ROW — flex layout, button always clickable */
+.pw{display:flex;align-items:stretch;border:1.5px solid rgba(0,0,0,.14);border-radius:10px;
+    background:#F5F2EC;transition:border-color .18s,background .18s,box-shadow .18s}
+.pw:focus-within{border-color:#E8610A;background:#fff;box-shadow:0 0 0 3px rgba(232,97,10,.12)}
+.pw input{flex:1;min-width:0;padding:.8rem 0 .8rem 1rem;border:none;background:transparent;
+          font-family:'DM Sans',sans-serif;font-size:.94rem;color:#1A1A1C;outline:none;
+          -webkit-appearance:none;border-radius:10px 0 0 10px}
+.pw input::placeholder{color:#9A9490}
+.pw .eye{flex-shrink:0;width:46px;display:flex;align-items:center;justify-content:center;
+         background:transparent;border:none;cursor:pointer;color:#9A9490;
+         border-radius:0 8px 8px 0;transition:color .15s,background .15s;padding:0}
+.pw .eye:hover{color:#E8610A;background:rgba(232,97,10,.07)}
+.pw .eye svg{width:20px;height:20px;display:block;pointer-events:none;overflow:visible}
+
+.sbar{height:3px;border-radius:99px;background:rgba(0,0,0,.08);margin-top:6px;overflow:hidden}
+.sfill{height:100%;width:0;border-radius:99px;transition:width .25s,background .25s}
+.slbl{font-size:.69rem;margin-top:3px;height:13px;font-weight:500}
+
+.btn{width:100%;padding:.9rem;background:#E8610A;color:#fff;border:none;border-radius:10px;
+     font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;
+     display:flex;align-items:center;justify-content:center;gap:9px;margin-top:.5rem;
+     transition:background .18s,transform .13s,box-shadow .18s}
+.btn:hover:not(:disabled){background:#B5490A;transform:translateY(-1px);box-shadow:0 5px 18px rgba(232,97,10,.3)}
+.btn:disabled{opacity:.65;cursor:not-allowed;transform:none;box-shadow:none}
+.spin{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;
+      border-radius:50%;animation:sp .65s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+.terms{font-size:.72rem;color:#9A9490;text-align:center;margin-top:.85rem;line-height:1.5}
+@media(max-width:700px){.L{display:none}.R{padding:1.5rem}.card{padding-top:1rem}}
+</style>
+</head>
+<body>
+<aside class="L" aria-hidden="true">
+  <div class="brand">Samayal<b>.AI</b></div>
+  <div>
+    <div class="ta">புதிய சமையல் பயணம் தொடங்கட்டும்!</div>
+    <h2>Start Your <em>South Indian</em><br>Culinary Journey</h2>
+    <p>Personalized recipes, bilingual Tamil + English ingredients, nutrition tracking, 7-day AI meal plan.</p>
+    <div class="steps">
+      <div class="step"><div class="sn">1</div>Create your free account</div>
+      <div class="step"><div class="sn">2</div>Tell us your food preferences</div>
+      <div class="step"><div class="sn">3</div>Get your AI-generated 7-day meal plan</div>
+      <div class="step"><div class="sn">4</div>Start cooking with AI guidance!</div>
+    </div>
+  </div>
+  <div class="fe">🍛<br>🫓<br>🍲</div>
+  <div class="lf">© 2025 SamayalAI · Free forever</div>
+</aside>
+
+<main class="R">
+  <div class="card">
+    <h1>Create Account 🎉</h1>
+    <p class="sub">Already have an account? <a href="/login">Sign in</a></p>
+
+    <div id="sb" role="alert" aria-live="assertive">
+      <span id="sb-icon"></span><span id="sb-msg"></span>
+    </div>
+
+    <div class="fg">
+      <label for="fn">Full Name</label>
+      <input type="text" id="fn" placeholder="Priya Krishnamurthy" autocomplete="name"/>
+    </div>
+    <div class="fg">
+      <label for="fe">Email Address</label>
+      <input type="email" id="fe" placeholder="priya@example.com" autocomplete="email"/>
+    </div>
+    <div class="fg">
+      <label for="fp">Password</label>
+      <div class="pw">
+        <input type="password" id="fp" placeholder="Minimum 8 characters" autocomplete="new-password"/>
+        <button type="button" class="eye" id="ep" aria-label="Show password" onclick="tog('fp','ep','eo1','ec1')">
+          <svg id="eo1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="ec1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+      </div>
+      <div class="sbar"><div class="sfill" id="sf"></div></div>
+      <div class="slbl" id="sl"></div>
+    </div>
+    <div class="fg">
+      <label for="fc">Confirm Password</label>
+      <div class="pw">
+        <input type="password" id="fc" placeholder="Repeat your password" autocomplete="new-password"/>
+        <button type="button" class="eye" id="ec" aria-label="Show confirm password" onclick="tog('fc','ec','eo2','ec2')">
+          <svg id="eo2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="ec2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="btn" id="rbtn" onclick="doReg()">Create My Account →</button>
+    <p class="terms">By registering you agree to our Terms &amp; Privacy Policy. No spam. No ads.</p>
+  </div>
+</main>
+
+<script>
+'use strict';
+// Already logged in? Go to dashboard
+if (localStorage.getItem('samayal_token')) window.location.href = '/dashboard';
+
+// Password toggle — direct IDs, no ambiguity
+function tog(inputId, btnId, openId, closeId) {
+  var f = document.getElementById(inputId);
+  var b = document.getElementById(btnId);
+  var o = document.getElementById(openId);
+  var c = document.getElementById(closeId);
+  if (!f) return;
+  var show = f.type === 'password';
+  f.type = show ? 'text' : 'password';
+  if (o) o.style.display = show ? 'none' : '';
+  if (c) c.style.display = show ? '' : 'none';
+  if (b) b.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+}
+
+// Strength meter
+document.getElementById('fp').addEventListener('input', function() {
+  var v = this.value, s = 0;
+  if (v.length >= 8) s++;
+  if (/[A-Z]/.test(v)) s++;
+  if (/[0-9]/.test(v)) s++;
+  if (/[^A-Za-z0-9]/.test(v)) s++;
+  var t = [['0%','transparent',''],['25%','#EF4444','Weak'],['50%','#F59E0B','Fair'],['75%','#3B82F6','Good'],['100%','#10B981','Strong 💪']][s];
+  var f = document.getElementById('sf'), l = document.getElementById('sl');
+  f.style.width = t[0]; f.style.background = t[1];
+  l.textContent = t[2]; l.style.color = t[1];
+});
+
+// Status bar — always uses style.display (never CSS class alone)
+function showStatus(type, icon, msg) {
+  var el = document.getElementById('sb');
+  el.className = type;           // sets colour via CSS class
+  el.style.display = 'flex';    // FORCES it visible — this is the critical fix
+  document.getElementById('sb-icon').textContent = icon;
+  document.getElementById('sb-msg').textContent  = msg;
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function hideStatus() {
+  document.getElementById('sb').style.display = 'none';
+}
+
+async function doReg() {
+  hideStatus();
+  var name  = document.getElementById('fn').value.trim();
+  var email = document.getElementById('fe').value.trim();
+  var pw    = document.getElementById('fp').value;
+  var cpw   = document.getElementById('fc').value;
+  var btn   = document.getElementById('rbtn');
+
+  if (!name)                        { showStatus('error','⚠️','Please enter your full name.');             return; }
+  if (!email)                       { showStatus('error','⚠️','Please enter your email address.');         return; }
+  if (!/\S+@\S+\.\S+/.test(email)) { showStatus('error','⚠️','Please enter a valid email address.');     return; }
+  if (!pw)                          { showStatus('error','⚠️','Please enter a password.');                 return; }
+  if (pw.length < 8)                { showStatus('error','⚠️','Password must be at least 8 characters.'); return; }
+  if (pw !== cpw)                   { showStatus('error','⚠️','Passwords do not match.');                  return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div> Creating account…';
+  showStatus('info', '⏳', 'Connecting to server…');
+
+  try {
+    var res = await fetch('/api/auth/register', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ name: name, email: email, password: pw })
+    });
+
+    var raw = await res.text();
+    var data;
+    try { data = JSON.parse(raw); }
+    catch (_) {
+      showStatus('error','❌','Server error (HTTP ' + res.status + '). Check terminal: node backend/server.js');
+      btn.disabled = false; btn.innerHTML = 'Create My Account →'; return;
+    }
+
+    if (data.success === true) {
+      localStorage.setItem('samayal_token', data.token);
+      localStorage.setItem('samayal_user',  JSON.stringify(data.user));
+      showStatus('success', '✅', 'Account created! Welcome, ' + data.user.name + '! Redirecting…');
+      setTimeout(function() {
+        window.location.href = data.onboardingRequired ? '/onboarding' : '/dashboard';
+      }, 1000);
+      return;
+    }
+
+    var msg = (data.errors && data.errors[0] && data.errors[0].msg) || data.error || 'Registration failed.';
+    if (/timeout|waking|terminated|ECONNREFUSED/i.test(msg)) {
+      showStatus('warning','⏳','Database is starting up (Neon free tier). Wait 10 seconds, then try again.');
+    } else {
+      showStatus('error','❌', msg);
+    }
+    btn.disabled = false; btn.innerHTML = 'Create My Account →';
+
+  } catch (netErr) {
+    showStatus('error','❌','Cannot reach server. Open terminal and run: node backend/server.js');
+    btn.disabled = false; btn.innerHTML = 'Create My Account →';
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.activeElement.tagName === 'INPUT') doReg();
+});
+</script>
+</body>
+</html>

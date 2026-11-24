@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Meal Planner – SamayalAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#F5F2EC;-webkit-font-smoothing:antialiased}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:62px;background:rgba(253,246,236,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;padding:0 1.5rem;gap:1rem}
+.logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:#B5490A;text-decoration:none}.logo b{color:#E8610A}
+.nav-r{margin-left:auto;display:flex;gap:10px}
+.nbtn{padding:6px 14px;border:1.5px solid rgba(0,0,0,.12);border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;background:transparent;color:#5A5856;transition:all .18s;text-decoration:none;display:inline-flex;align-items:center}
+.nbtn:hover{border-color:#E8610A;color:#E8610A}
+.page{max-width:1200px;margin:0 auto;padding:calc(62px + 2rem) 1.5rem 3rem}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.ph-l h1{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:#1A1A1C;margin-bottom:4px}
+.ph-l p{color:#5A5856;font-size:.875rem}
+.ph-r{display:flex;gap:10px}
+.btn{padding:.75rem 1.4rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.875rem;cursor:pointer;border:none;transition:all .18s;display:flex;align-items:center;gap:7px}
+.btn-p{background:#E8610A;color:#fff}.btn-p:hover{background:#B5490A;transform:translateY(-1px)}
+.btn-s{background:#fff;color:#1A1A1C;border:1.5px solid rgba(0,0,0,.12)}.btn-s:hover{border-color:#E8610A;color:#E8610A}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* Loading */
+.loading{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;padding:4rem 2rem;text-align:center}
+.dots{display:flex;gap:5px;justify-content:center;margin-bottom:1.25rem}
+.dot{width:8px;height:8px;border-radius:50%;background:#E8610A;animation:dp 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes dp{0%,80%,100%{opacity:.3;transform:scale(.85)}40%{opacity:1;transform:scale(1.1)}}
+.loading p{color:#5A5856;font-size:.95rem}
+.loading .sub{font-size:.8rem;color:#9A9490;margin-top:.5rem}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:1.75rem}
+.stat{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:12px;padding:1rem;text-align:center}
+.stat-v{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:800;color:#E8610A}
+.stat-l{font-size:.7rem;color:#9A9490;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+/* Day tabs */
+.day-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:1.5rem;padding-bottom:4px}
+.day-tabs::-webkit-scrollbar{display:none}
+.dt{flex-shrink:0;padding:8px 16px;border-radius:99px;font-size:.82rem;font-weight:600;border:1.5px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;transition:all .18s;color:#5A5856;text-align:center}
+.dt.act{background:#E8610A;color:#fff;border-color:#E8610A}
+.dt .dn{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;display:block}
+.dt .dd{font-size:.875rem;font-weight:700}
+.dt .dc{font-size:.68rem;color:inherit;opacity:.75}
+/* Meal cards */
+.meal-grid{display:flex;flex-direction:column;gap:12px}
+.mc{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;overflow:hidden}
+.mc-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem;border-bottom:1px solid rgba(0,0,0,.06);cursor:pointer;user-select:none}
+.mc-left{display:flex;align-items:center;gap:12px}
+.mc-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.mc-ico.bf{background:#FFF9C4}.mc-ico.ms{background:#F3E5F5}.mc-ico.lu{background:#E8F5E9}.mc-ico.es{background:#FFF3E0}.mc-ico.di{background:#EDE7F6}
+.mc-info h4{font-size:.9rem;font-weight:700;color:#1A1A1C}
+.mc-info p{font-size:.72rem;color:#9A9490}
+.mc-right{display:flex;align-items:center;gap:10px}
+.cal-pill{background:#FFF3E8;color:#B5490A;padding:3px 10px;border-radius:99px;font-size:.75rem;font-weight:700}
+.arr{color:#9A9490;font-size:.8rem;transition:transform .2s}
+.mc.open .arr{transform:rotate(180deg)}
+.mc-body{display:none;padding:1.25rem}
+.mc.open .mc-body{display:block}
+.dish-row{display:flex;gap:1rem;align-items:flex-start}
+.dish-emoji{font-size:2.5rem;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:#F5F2EC;border-radius:12px;flex-shrink:0}
+.dish-info h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#1A1A1C;margin-bottom:2px}
+.dish-ta{font-family:'Noto Sans Tamil',sans-serif;font-size:.82rem;color:#5A5856;margin-bottom:8px}
+.dish-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.badge{padding:3px 9px;border-radius:99px;font-size:.72rem;font-weight:700}
+.bg-o{background:#FFF3E8;color:#B5490A;border:1px solid rgba(232,97,10,.2)}
+.bg-g{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0}
+.dish-desc{font-size:.875rem;color:#5A5856;line-height:1.65;margin-bottom:10px}
+.dish-acts{display:flex;gap:8px;flex-wrap:wrap}
+.act-btn{padding:6px 14px;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;border:none;transition:all .18s}
+.act-p{background:#E8610A;color:#fff}.act-p:hover{background:#B5490A}
+.act-s{background:#fff;color:#5A5856;border:1.5px solid rgba(0,0,0,.12)}.act-s:hover{border-color:#E8610A;color:#E8610A}
+.health-note{background:#ECFDF5;border-radius:8px;padding:.6rem .875rem;font-size:.82rem;color:#065F46;margin-top:.75rem;display:flex;gap:7px}
+/* Weekly table */
+.week-table{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;overflow:hidden;margin-top:1.75rem}
+.wt-head{padding:1.1rem 1.5rem;border-bottom:1px solid rgba(0,0,0,.07);display:flex;justify-content:space-between;align-items:center}
+.wt-head h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 12px;background:#F5F2EC;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#9A9490;text-align:left;border-bottom:1px solid rgba(0,0,0,.07);white-space:nowrap}
+td{padding:10px 12px;font-size:.82rem;border-bottom:1px solid rgba(0,0,0,.06);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFAF8}
+.tc-dish{font-weight:600;color:#1A1A1C}
+.tc-ta{font-family:'Noto Sans Tamil',sans-serif;font-size:.72rem;color:#9A9490;margin-top:1px}
+.tc-cal{font-size:.72rem;color:#E8610A;font-weight:700}
+/* Shopping */
+.shop{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;overflow:hidden;margin-top:1.5rem}
+.shop-head{padding:1.1rem 1.5rem;border-bottom:1px solid rgba(0,0,0,.07);display:flex;justify-content:space-between;align-items:center}
+.shop-head h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(0,0,0,.06)}
+.shop-cat{background:#fff;padding:1.1rem}
+.shop-cat h4{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9A9490;margin-bottom:.75rem}
+.shop-item{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:.85rem;color:#1A1A1C;border-bottom:1px solid rgba(0,0,0,.05);cursor:pointer}
+.shop-item input{accent-color:#E8610A;width:15px;height:15px;cursor:pointer}
+.shop-item.done label{text-decoration:line-through;color:#9A9490}
+.spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:768px){.stats{grid-template-columns:repeat(3,1fr)}.shop-grid{grid-template-columns:1fr}.ph{flex-direction:column}}
+@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/dashboard" class="logo">Samayal<b>.AI</b></a>
+  <span style="color:#9A9490;font-size:.85rem">/ Meal Planner</span>
+  <div class="nav-r">
+    <a href="/dashboard" class="nbtn">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="ph">
+    <div class="ph-l">
+      <h1>🗓️ Weekly Meal Plan</h1>
+      <p>Personalized 7-day South Indian plan · Breakfast · Morning Snack · Lunch · Evening Snack · Dinner</p>
+    </div>
+    <div class="ph-r">
+      <button class="btn btn-s" onclick="load(true)">🔄 Regenerate</button>
+      <button class="btn btn-p" onclick="window.print()">🖨️ Print</button>
+    </div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <p id="load-msg">✨ Generating your personalized 7-day South Indian meal plan with Groq AI…</p>
+    <p class="sub">This takes 15–25 seconds. Crafting something special for you!</p>
+  </div>
+
+  <div id="content" style="display:none">
+    <div class="stats" id="stats"></div>
+    <div class="day-tabs" id="dayTabs"></div>
+    <div class="meal-grid" id="mealGrid"></div>
+    <div class="week-table">
+      <div class="wt-head"><h3>📊 Full Week Overview</h3></div>
+      <div class="tbl-wrap"><table id="overviewTable"></table></div>
+    </div>
+    <div class="shop">
+      <div class="shop-head">
+        <h3>🛒 Shopping List</h3>
+        <button class="btn btn-s" style="font-size:.78rem;padding:5px 12px" onclick="copyList()">📋 Copy</button>
+      </div>
+      <div class="shop-grid" id="shopGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+if (!localStorage.getItem('samayal_token')) window.location.href = '/login';
+
+var MEALS = [
+  {k:'breakfast',    l:'Breakfast',     t:'7:30 AM',  i:'☀️', c:'bf'},
+  {k:'morning_snack',l:'Morning Snack', t:'10:30 AM', i:'🍵', c:'ms'},
+  {k:'lunch',        l:'Lunch',         t:'1:00 PM',  i:'🌞', c:'lu'},
+  {k:'evening_snack',l:'Evening Snack', t:'5:00 PM',  i:'🌆', c:'es'},
+  {k:'dinner',       l:'Dinner',        t:'8:00 PM',  i:'🌙', c:'di'},
+];
+var EMOJIS = {idli:'🫓',dosa:'🥞',sambar:'🍲',rasam:'🍵',pongal:'🍚',biryani:'🍛',chicken:'🍗',fish:'🐟',curry:'🍛',rice:'🍚',upma:'🫕',vada:'🧆',coffee:'☕',chai:'☕',tea:'🍵',banana:'🍌',murukku:'🥨',chapati:'🫓',dal:'🍲',default:'🍽️'};
+function emoji(dish){var d=(dish||'').toLowerCase();for(var k in EMOJIS){if(d.includes(k))return EMOJIS[k];}return EMOJIS.default;}
+
+var plan=null, activeDay=0;
+
+async function load(regen) {
+  document.getElementById('loading').style.display='block';
+  document.getElementById('content').style.display='none';
+  if(regen) document.getElementById('load-msg').textContent='🔄 Regenerating your meal plan…';
+  try {
+    var res = await fetch('/api/ai/meal-plan', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+localStorage.getItem('samayal_token')},
+      body: JSON.stringify({regenerate: !!regen})
+    });
+    var data = await res.json();
+    document.getElementById('loading').style.display='none';
+    if(!data.success){alert(data.error||'Failed to load plan.');return;}
+    plan = data.plan;
+    render();
+    document.getElementById('content').style.display='block';
+    if(regen) showToast('New meal plan generated! 🎉');
+  } catch(e) {
+    document.getElementById('loading').style.display='none';
+    alert('Cannot reach server. Make sure node backend/server.js is running.');
+  }
+}
+
+function render() {
+  renderStats(); renderTabs(); showDay(0); renderTable(); renderShop();
+}
+
+function renderStats() {
+  var days=plan.days||[];
+  var avg=Math.round(days.reduce(function(s,d){return s+(d.total_calories||0);},0)/(days.length||1));
+  document.getElementById('stats').innerHTML=[
+    {v:days.length,l:'Days Planned'},
+    {v:avg,l:'Avg Daily kcal'},
+    {v:days.length*5,l:'Total Meals'},
+    {v:plan.total_avg_daily_calories||avg,l:'Target kcal'},
+    {v:'100%',l:'South Indian 🌿'},
+  ].map(function(s){return '<div class="stat"><div class="stat-v">'+s.v+'</div><div class="stat-l">'+s.l+'</div></div>';}).join('');
+}
+
+function renderTabs() {
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var today=new Date().getDay();
+  document.getElementById('dayTabs').innerHTML=(plan.days||[]).map(function(d,i){
+    var di=(1+i)%7;
+    return '<button class="dt'+(i===0?' act':'')+'" onclick="showDay('+i+')" id="dt-'+i+'">'+
+      '<span class="dn">'+DAYS[di]+'</span>'+
+      '<span class="dd">'+(d.day_name||FULL[di])+'</span>'+
+      '<span class="dc">'+(d.total_calories||'—')+' kcal</span>'+
+    '</button>';
+  }).join('');
+}
+
+function showDay(idx) {
+  activeDay=idx;
+  document.querySelectorAll('.dt').forEach(function(t,i){t.classList.toggle('act',i===idx);});
+  var day=(plan.days||[])[idx];
+  if(!day) return;
+  document.getElementById('mealGrid').innerHTML=MEALS.map(function(m){
+    var meal=(day.meals||{})[m.k]||{};
+    var dish=meal.dish||'—';
+    var ta=meal.dish_tamil||'';
+    var cal=meal.calories||'—';
+    var prep=meal.prep_time||'—';
+    var ing=meal.ingredients_summary||'';
+    var note=meal.health_note||'';
+    var em=emoji(dish);
+    return '<div class="mc" id="mc-'+m.k+'">'+
+      '<div class="mc-head" onclick="toggle(\''+m.k+'\')">'+
+        '<div class="mc-left">'+
+          '<div class="mc-ico '+m.c+'">'+m.i+'</div>'+
+          '<div class="mc-info"><h4>'+m.l+'</h4><p>'+m.t+'</p></div>'+
+        '</div>'+
+        '<div class="mc-right">'+
+          '<span class="cal-pill">'+cal+' kcal</span>'+
+          '<span class="badge bg-o">'+prep+'</span>'+
+          '<span class="arr">▾</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="mc-body">'+
+        '<div class="dish-row">'+
+          '<div class="dish-emoji">'+em+'</div>'+
+          '<div class="dish-info">'+
+            '<h3>'+dish+'</h3>'+
+            (ta?'<div class="dish-ta">'+ta+'</div>':'')+
+            '<div class="dish-meta">'+
+              '<span class="badge bg-o">⏱ '+prep+'</span>'+
+              '<span class="badge bg-o">🔥 '+cal+' kcal</span>'+
+            '</div>'+
+            (ing?'<p class="dish-desc">🧂 '+ing+'</p>':'')+
+            '<div class="dish-acts">'+
+              '<button class="act-btn act-p" onclick="goRecipe(\''+dish.replace(/'/g,"\\'")+'\')" >🤖 Full Recipe</button>'+
+              '<button class="act-btn act-s" onclick="goNutrition(\''+dish.replace(/'/g,"\\'")+'\')">🥗 Nutrition</button>'+
+            '</div>'+
+          '</div>'+
+        '</div>'+
+        (note?'<div class="health-note">🌿 '+note+'</div>':'')+
+      '</div>'+
+    '</div>';
+  }).join('');
+  // open first by default
+  var first=document.getElementById('mc-breakfast');
+  if(first) first.classList.add('open');
+}
+
+function toggle(k){document.getElementById('mc-'+k).classList.toggle('open');}
+
+function renderTable() {
+  var days=plan.days||[];
+  var html='<thead><tr><th>Meal</th>'+days.map(function(d){return '<th>'+d.day_name+'</th>';}).join('')+'</tr></thead><tbody>';
+  MEALS.forEach(function(m){
+    html+='<tr><td><strong>'+m.i+' '+m.l+'</strong><br><span style="font-size:.7rem;color:#9A9490">'+m.t+'</span></td>';
+    days.forEach(function(d){
+      var ml=(d.meals||{})[m.k]||{};
+      html+='<td><div class="tc-dish">'+(ml.dish||'—')+'</div>'+(ml.dish_tamil?'<div class="tc-ta">'+ml.dish_tamil+'</div>':'')+(ml.calories?'<div class="tc-cal">'+ml.calories+' kcal</div>':'')+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='<tr style="background:#F5F2EC"><td><strong>Total</strong></td>'+days.map(function(d){return '<td><strong style="color:#E8610A">'+(d.total_calories||'—')+' kcal</strong></td>';}).join('')+'</tr>';
+  html+='</tbody>';
+  document.getElementById('overviewTable').innerHTML=html;
+}
+
+function renderShop(){
+  var sl=plan.shopping_list||{};
+  var cats={vegetables:'🥦 Vegetables',grains_pulses:'🌾 Grains & Pulses',spices:'🌶️ Spices',dairy:'🥛 Dairy',proteins:'🍗 Proteins',others:'📦 Others'};
+  document.getElementById('shopGrid').innerHTML=Object.keys(cats).filter(function(k){return (sl[k]||[]).length;}).map(function(k){
+    return '<div class="shop-cat"><h4>'+cats[k]+'</h4>'+
+      (sl[k]||[]).map(function(item,i){
+        return '<div class="shop-item" id="si-'+k+'-'+i+'" onclick="tickItem(\''+k+'\','+i+')"><input type="checkbox" id="cb-'+k+'-'+i+'"><label for="cb-'+k+'-'+i+'" style="cursor:pointer">'+item+'</label></div>';
+      }).join('')+
+    '</div>';
+  }).join('');
+}
+
+function tickItem(k,i){document.getElementById('si-'+k+'-'+i).classList.toggle('done');}
+
+function copyList(){
+  var sl=plan.shopping_list||{};
+  var txt='🛒 SamayalAI Shopping List\n\n';
+  Object.entries(sl).forEach(function(e){if((e[1]||[]).length)txt+=e[0].toUpperCase()+':\n'+e[1].map(function(i){return '• '+i;}).join('\n')+'\n\n';});
+  navigator.clipboard.writeText(txt).then(function(){showToast('Shopping list copied! 📋');});
+}
+
+function goRecipe(dish){localStorage.setItem('samayal_pending_query','Full recipe for '+dish+' with bilingual ingredients');window.location.href='/dashboard';}
+function goNutrition(dish){localStorage.setItem('samayal_pending_query','Nutrition analysis for '+dish);window.location.href='/dashboard';}
+
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:1.5rem;right:1.5rem;background:#2D6A4F;color:#fff;padding:.875rem 1.25rem;border-radius:12px;font-size:.875rem;font-weight:500;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.18)';
+  t.textContent=msg; document.body.appendChild(t);
+  setTimeout(function(){t.remove();},3000);
+}
+
+load(false);
+</script>
+</body>
+</html>
